@@ -20,7 +20,10 @@ func connectMySql() *gorm.DB {
     fmt.Println("Connecting MySQL...")
 
     dsn := fmt.Sprintf("%s:%s@tcp(%s)/",
-        configs.MYSQL_USER, configs.MYSQL_PASSWORD, configs.MYSQL_HOST)
+        configs.MYSQL_USER,
+        configs.MYSQL_PASSWORD,
+        configs.MYSQL_HOST,
+    )
 
     db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
     if err != nil {
@@ -36,7 +39,10 @@ func connectMySql() *gorm.DB {
 func createDatabaseIfNotExists(db *gorm.DB) *gorm.DB {
     fmt.Printf("Creating database %s..\n", configs.MYSQL_DATABASE)
 
-    sql := fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;", configs.MYSQL_DATABASE)
+    sql := fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s DEFAULT CHARACTER SET %s COLLATE utf8mb4_unicode_ci;",
+        configs.MYSQL_DATABASE,
+        configs.MYSQL_CHARACTER_SET,
+    )
     db = db.Exec(sql)
 
     err := db.Error
@@ -45,15 +51,24 @@ func createDatabaseIfNotExists(db *gorm.DB) *gorm.DB {
         panic(err)
     }
 
-    fmt.Printf("Create database %s success\n\n", configs.MYSQL_DATABASE)
+    fmt.Printf("Create database %s success\n\n",
+        configs.MYSQL_DATABASE,
+    )
     return db
 }
 
 func openDatabase() *gorm.DB {
-    fmt.Printf("Opening database %s...\n", configs.MYSQL_DATABASE)
+    fmt.Printf("Opening database %s...\n",
+        configs.MYSQL_DATABASE,
+    )
 
-    dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-        configs.MYSQL_USER, configs.MYSQL_PASSWORD, configs.MYSQL_HOST, configs.MYSQL_DATABASE)
+    dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=%s&parseTime=True&loc=Local",
+        configs.MYSQL_USER,
+        configs.MYSQL_PASSWORD,
+        configs.MYSQL_HOST,
+        configs.MYSQL_DATABASE,
+        configs.MYSQL_CHARACTER_SET,
+    )
 
     db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
     if err != nil {
@@ -61,6 +76,8 @@ func openDatabase() *gorm.DB {
         panic(err)
     }
 
-    fmt.Printf("Open database %s success\n\n", configs.MYSQL_DATABASE)
+    fmt.Printf("Open database %s success\n\n",
+        configs.MYSQL_DATABASE,
+    )
     return db
 }

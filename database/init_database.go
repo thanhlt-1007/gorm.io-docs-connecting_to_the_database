@@ -39,9 +39,10 @@ func connectMySql() *gorm.DB {
 func createDatabaseIfNotExists(db *gorm.DB) *gorm.DB {
     fmt.Printf("Creating database %s..\n", configs.MYSQL_DATABASE)
 
-    sql := fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s DEFAULT CHARACTER SET %s COLLATE utf8mb4_unicode_ci;",
+    sql := fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s DEFAULT CHARACTER SET %s COLLATE %s;",
         configs.MYSQL_DATABASE,
         configs.MYSQL_CHARACTER_SET,
+        configs.MYSQL_COLLATE,
     )
     db = db.Exec(sql)
 

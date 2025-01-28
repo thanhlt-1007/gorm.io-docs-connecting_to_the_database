@@ -5,5 +5,6 @@ import (
 )
 
 func main() {
-    database.InitDatabase()
+    db := database.InitDatabase()
+    database.AutoMigrate(db)
 }
